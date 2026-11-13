@@ -15,8 +15,18 @@ A 4,065-byte chess engine in Python for the make.fun tiny-chess-01 bounty.
 
 ## Build
 
-The dev engine is in `dev/engine.py`. Pack it with `dev/pack.py` to produce
-`engine.lzma`, and `main.py` launches it.
+The readable engine source is in `dev/engine.py` (531 lines).
+`dev/pack.py` minifies it (9,943 bytes), compresses it with raw LZMA2
+(3,720 bytes) and embeds it in a self-contained `main.py` (4,001 bytes,
+under the 4,096-byte cap), then verifies the packed engine agrees with
+the dev engine on 6 test positions. The repo ships the split form
+instead — a small UTF-8 launcher `main.py` (373 bytes) plus the raw
+payload `engine.lzma` — because the single latin-1 `main.py` cannot be
+pushed through GitHub's API as UTF-8. The payload is byte-identical to
+what `dev/pack.py` produces.
+
+`dev/test_engine.py` runs perft move-count tests against known values;
+`dev/selfplay.py` plays the engine against a greedy opponent.
 
 ## Files
 
